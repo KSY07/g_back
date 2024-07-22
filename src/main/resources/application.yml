@@ -1,0 +1,5 @@
+spring:
+  application:
+    name: gonggansongil_back
+  profiles:
+    default: dev

@@ -1,5 +1,6 @@
 package io.gongson.g_back.entity.board;
 
+import io.gongson.g_back.entity.auth.Company;
 import jakarta.persistence.*;
 
 @Entity
@@ -11,4 +12,7 @@ public class ConstructionExample {
     private String title;
     private String description;
     private String imgFileDir;
+    @ManyToOne(cascade=CascadeType.ALL)
+    @JoinColumn(name="company_pk", referencedColumnName="id")
+    private Company company;
 }
