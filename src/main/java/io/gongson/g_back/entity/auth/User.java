@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Entity
 @Table(name="g_user")
 @AllArgsConstructor
@@ -16,10 +18,9 @@ public class User {
     private long pk;
     private String userId;
     private String password;
-    @Enumerated(EnumType.STRING)
-    private UserType type;
     private String name;
     private String email;
     private String phone;
+    private String providers;
 
 }
