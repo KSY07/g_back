@@ -20,7 +20,7 @@ public class CompanyController {
     @GetMapping("/list")
     public ResponseEntity<?> getList() {
         try {
-
+            return null;
         } catch(Exception e){
             e.printStackTrace();
             return ResponseEntity.status(HttpServletResponse.SC_INTERNAL_SERVER_ERROR).build();

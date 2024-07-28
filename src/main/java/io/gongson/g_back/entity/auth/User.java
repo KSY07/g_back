@@ -3,6 +3,7 @@ package io.gongson.g_back.entity.auth;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
@@ -16,10 +17,11 @@ public class User {
     @Id
     @GeneratedValue
     private long pk;
-    private String userId;
+    private @Getter String userId;
     private String password;
-    private String name;
-    private String email;
-    private String phone;
-    private String providers;
+    private @Getter String name;
+    private @Getter String email;
+    private @Getter String phone;
+    private @Getter String providers;
+    private @Getter boolean isAdmin;
 }
