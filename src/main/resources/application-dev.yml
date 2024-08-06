@@ -16,4 +16,4 @@ spring:
 
 app:
   file:
-    saveDir: D:\\workspace\\gongson\\g_back_files
+    saveDir: classpath:/static/uploads/

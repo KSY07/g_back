@@ -31,7 +31,7 @@ public class FileUtils {
             Files.createDirectories(path);
         }
 
-        String filePath = path + "/" + file.getOriginalFilename();
+        String filePath = path + file.getOriginalFilename();
         File dest = new File(filePath);
         file.transferTo(dest);
 
