@@ -1,5 +1,7 @@
 package io.gongson.g_back.controller;
 
+import io.gongson.g_back.dto.InteriorTipDTO;
+import io.gongson.g_back.service.BoardService;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -13,6 +15,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Base64;
 
 @RestController
 @RequestMapping("/board")
@@ -23,6 +26,7 @@ public class BoardController {
     private String rootDir;
 
     private final ResourceLoader resourceLoader;
+    private final BoardService boardService;
 
     @PostMapping("/image/upload")
     public ResponseEntity<?> uploadImage(
@@ -34,16 +38,16 @@ public class BoardController {
         }
 
         try {
-            Path staticPath = Paths.get(resourceLoader.getResource("classpath:static/images/interiorTip").getURI());
-            System.out.println(staticPath.toAbsolutePath());
-            if(!Files.exists(staticPath)){
-                Files.createDirectories(staticPath);
+            String postFolderPath = rootDir + "interiorTip\\";
+            File postFolder = new File(postFolderPath);
+            if(!postFolder.exists()){
+                postFolder.mkdirs();
             }
 
             String originalFilename = file.getOriginalFilename();
-            String filePath = staticPath + originalFilename;
+            String filePath = postFolderPath + originalFilename;
             file.transferTo(new File(filePath));
-            String fileUrl = "http://localhost:8080/images/" + originalFilename;
+            String fileUrl = "http://localhost:8080/static/interiorTip/" + originalFilename;
             System.out.println(fileUrl);
             return ResponseEntity.ok(fileUrl);
         } catch(IOException e) {
@@ -51,4 +55,27 @@ public class BoardController {
             return ResponseEntity.status(HttpServletResponse.SC_INTERNAL_SERVER_ERROR).build();
         }
     }
+
+    @PostMapping("/tips/save")
+    public ResponseEntity<?> saveTips(@RequestPart("dto")InteriorTipDTO.Create dto, @RequestPart("thumbnail") MultipartFile thumbnail) {
+        try {
+            String thumbnailBase64 = Base64.getEncoder().encodeToString(thumbnail.getBytes());
+            boardService.saveInteriorTip(dto, thumbnailBase64);
+            return ResponseEntity.status(201).build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpServletResponse.SC_INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @GetMapping("/tips/all")
+    public ResponseEntity<?> getAllTips() {
+        try {
+            return ResponseEntity.ok(boardService.getInteriorTips());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpServletResponse.SC_INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
 }

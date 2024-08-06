@@ -43,4 +43,14 @@ public class FileUtils {
         byte[] bytes = Files.readAllBytes(imagePath);
         return Base64.getEncoder().encodeToString(bytes);
     }
+
+    public String encodeFileToBase64(MultipartFile file) throws IOException {
+        try {
+            byte[] bytes = file.getBytes();
+            return Base64.getEncoder().encodeToString(bytes);
+        } catch(IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }

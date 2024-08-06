@@ -16,4 +16,4 @@ spring:
 
 app:
   file:
-    saveDir: classpath:/static/uploads/
+    saveDir: D:\\gongson\\uploads\\
