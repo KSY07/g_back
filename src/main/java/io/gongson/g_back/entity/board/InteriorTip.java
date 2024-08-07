@@ -8,6 +8,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.util.Base64;
 import java.util.UUID;
@@ -26,8 +30,7 @@ public class InteriorTip {
     private String content;
     private int likes;
     private LocalDateTime createdAt;
-    @Lob
-    private byte[] thumbnail;
+    private String thumbnailDir;
 
     public static InteriorTip createByDTO(InteriorTipDTO.Create dto, String thumbnail) {
         return InteriorTip.builder()
@@ -36,7 +39,25 @@ public class InteriorTip {
                 .content(dto.getContent())
                 .likes(0)
                 .createdAt(LocalDateTime.now())
-                .thumbnail(Base64.getDecoder().decode(thumbnail))
+                .thumbnailDir(thumbnail)
+                .build();
+    }
+
+    public InteriorTipDTO.Info toDto() {
+        String ext = thumbnailDir.substring(thumbnailDir.lastIndexOf("."));
+        byte[] thumbnailBytes;
+        try {
+            thumbnailBytes = Files.readAllBytes(Path.of(thumbnailDir));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return InteriorTipDTO.Info.builder()
+                .id(this.id)
+                .title(this.title)
+                .content(this.content)
+                .likes(this.likes)
+                .createdAt(this.createdAt)
+                .thumbnailBase64String(String.format("data:image/%s;base64,%s", ext, Base64.getEncoder().encodeToString(thumbnailBytes)))
                 .build();
     }
 }

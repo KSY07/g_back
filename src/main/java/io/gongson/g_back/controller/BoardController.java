@@ -59,8 +59,7 @@ public class BoardController {
     @PostMapping("/tips/save")
     public ResponseEntity<?> saveTips(@RequestPart("dto")InteriorTipDTO.Create dto, @RequestPart("thumbnail") MultipartFile thumbnail) {
         try {
-            String thumbnailBase64 = Base64.getEncoder().encodeToString(thumbnail.getBytes());
-            boardService.saveInteriorTip(dto, thumbnailBase64);
+            boardService.saveInteriorTip(dto, thumbnail);
             return ResponseEntity.status(201).build();
         } catch (Exception e) {
             e.printStackTrace();
@@ -72,6 +71,17 @@ public class BoardController {
     public ResponseEntity<?> getAllTips() {
         try {
             return ResponseEntity.ok(boardService.getInteriorTips());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpServletResponse.SC_INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @GetMapping("/tips")
+    public ResponseEntity<?> getTip(@RequestParam String id)
+    {
+        try {
+            return ResponseEntity.ok(boardService.getInteriorTip(id));
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpServletResponse.SC_INTERNAL_SERVER_ERROR).build();
