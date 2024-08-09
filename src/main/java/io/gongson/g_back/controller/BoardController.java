@@ -38,7 +38,7 @@ public class BoardController {
         }
 
         try {
-            String postFolderPath = rootDir + "interiorTip\\";
+            String postFolderPath = rootDir + "interiorTip/";
             File postFolder = new File(postFolderPath);
             if(!postFolder.exists()){
                 postFolder.mkdirs();
