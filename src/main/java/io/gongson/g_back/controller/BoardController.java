@@ -47,7 +47,7 @@ public class BoardController {
             String originalFilename = file.getOriginalFilename();
             String filePath = postFolderPath + originalFilename;
             file.transferTo(new File(filePath));
-            String fileUrl = "http://localhost:8080/static/interiorTip/" + originalFilename;
+            String fileUrl = "http://10.79.9.79:8080/static/interiorTip/" + originalFilename;
             System.out.println(fileUrl);
             return ResponseEntity.ok(fileUrl);
         } catch(IOException e) {
