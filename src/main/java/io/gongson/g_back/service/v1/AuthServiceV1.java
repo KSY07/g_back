@@ -47,25 +47,49 @@ public class AuthServiceV1 implements AuthService {
     public Map<String, Object> signIn(AuthDTO.SignIn dto) {
         String userId = dto.getUserId();
         String password = dto.getPassword();
-
-        User u = userRepository.findByUserIdAndPassword(userId, password).orElseThrow(
-                () -> new RuntimeException("User Id Not Found")
-        );
-
+        boolean isCompany = dto.isCompany();
         Map<String, Object> result = new HashMap<>();
+        if(isCompany) {
+            Company c = companyRepository.findByCompanyIdAndPassword(userId,password).orElseThrow(
+                    () -> new RuntimeException("Company Not Found")
+            );
 
-        result.put("userId", userId);
-        result.put("name", u.getName());
-        result.put("email", u.getEmail());
-        result.put("phone", u.getPhone());
-        result.put("providers", u.getProviders());
-        result.put("isAdmin", u.isAdmin());
+            result.put("companyId", c.getCompanyId());
+            result.put("companyName", c.getCompanyName());
+            result.put("companyCeoName", c.getCeoName());
+            result.put("pk", c.getId());
+            result.put("isPremium", c.isPremium());
 
-        return result;
+            return result;
+        } else {
+            User u = userRepository.findByUserIdAndPassword(userId, password).orElseThrow(
+                    () -> new RuntimeException("User Id Not Found")
+            );
+
+            result.put("userId", userId);
+            result.put("name", u.getName());
+            result.put("email", u.getEmail());
+            result.put("phone", u.getPhone());
+            result.put("providers", u.getProviders());
+            result.put("isAdmin", u.isAdmin());
+
+            return result;
+        }
     }
 
     @Override
     public boolean logout(String userId) {
         return false;
+    }
+
+    @Override
+    public boolean signUp(AuthDTO.SignUp dto) {
+        try {
+            userRepository.save(User.toEntity(dto));
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 }

@@ -17,4 +17,16 @@ public class AuthDTO {
         private boolean isCompany;
     }
 
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Builder
+    @Getter
+    public static class SignUp {
+        private String userId;
+        private String password;
+        private String nickname;
+        private String email;
+        private String phone;
+    }
+
 }

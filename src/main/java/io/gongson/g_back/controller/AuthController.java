@@ -49,4 +49,14 @@ public class AuthController {
             return ResponseEntity.status(HttpServletResponse.SC_INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
+
+    @PostMapping("/signUp")
+    public ResponseEntity<?> signUp(@RequestBody AuthDTO.SignUp dto) {
+        boolean res = authService.signUp(dto);
+        if(res) {
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.status(HttpServletResponse.SC_BAD_REQUEST).body(null);
+        }
+    }
 }

@@ -10,4 +10,5 @@ public interface AuthService {
     public boolean addCompany(CompanyDTO.AddCompanyRequest dto, MultipartFile file);
     public Map<String, Object> signIn(AuthDTO.SignIn dto);
     public boolean logout(String userId);
+    public boolean signUp(AuthDTO.SignUp dto);
 }

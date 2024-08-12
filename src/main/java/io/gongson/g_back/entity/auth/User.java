@@ -1,5 +1,6 @@
 package io.gongson.g_back.entity.auth;
 
+import io.gongson.g_back.dto.AuthDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -24,4 +25,15 @@ public class User {
     private @Getter String phone;
     private @Getter String providers;
     private @Getter boolean isAdmin;
+
+    public static User toEntity(AuthDTO.SignUp dto) {
+        return User.builder()
+                .userId(dto.getUserId())
+                .password(dto.getPassword())
+                .email(dto.getEmail())
+                .phone(dto.getPhone())
+                .providers("")
+                .isAdmin(false)
+                .build();
+    }
 }
