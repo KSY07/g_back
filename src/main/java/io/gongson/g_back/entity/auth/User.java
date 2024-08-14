@@ -16,7 +16,7 @@ import java.util.List;
 @Builder
 public class User {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long pk;
     private @Getter String userId;
     private String password;
