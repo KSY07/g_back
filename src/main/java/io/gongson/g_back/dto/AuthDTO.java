@@ -14,7 +14,7 @@ public class AuthDTO {
     public static class SignIn {
         private String userId;
         private String password;
-        private boolean isCompany;
+        private String userType;
     }
 
     @AllArgsConstructor

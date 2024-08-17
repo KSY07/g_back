@@ -10,6 +10,8 @@ import io.gongson.g_back.service.AuthService;
 import io.gongson.g_back.utils.FileType;
 import io.gongson.g_back.utils.FileUtils;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -20,6 +22,7 @@ import java.util.Map;
 @Service
 @RequiredArgsConstructor
 public class AuthServiceV1 implements AuthService {
+    private static final Logger log = LoggerFactory.getLogger(AuthServiceV1.class);
     private final FileUtils fileUtils;
     private final CompanyRepository companyRepository;
     private final UserRepository userRepository;
@@ -47,7 +50,7 @@ public class AuthServiceV1 implements AuthService {
     public Map<String, Object> signIn(AuthDTO.SignIn dto) {
         String userId = dto.getUserId();
         String password = dto.getPassword();
-        boolean isCompany = dto.isCompany();
+        boolean isCompany = dto.getUserType().equals("company");
         Map<String, Object> result = new HashMap<>();
         if(isCompany) {
             Company c = companyRepository.findByCompanyIdAndPassword(userId,password).orElseThrow(
