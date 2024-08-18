@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface CompanyService {
     List<CompanyDTO.CompanyInfo> getCompanyList();
+    CompanyDTO.CompanyInfo getCompanyById(int id);
 }

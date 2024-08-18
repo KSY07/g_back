@@ -19,4 +19,12 @@ public class CompanyServiceV1 implements CompanyService {
     public List<CompanyDTO.CompanyInfo> getCompanyList() {
         return companyRepository.findAll().stream().map(Company::toDto).toList();
     }
+
+    @Override
+    public CompanyDTO.CompanyInfo getCompanyById(int id) {
+        long lid = id;
+        return Company.toDto(companyRepository.findById(lid).orElseThrow(
+                () -> new RuntimeException("Not Valid Company Pk")
+        ));
+    }
 }
