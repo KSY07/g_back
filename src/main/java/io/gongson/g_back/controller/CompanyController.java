@@ -28,7 +28,7 @@ public class CompanyController {
         }
     }
 
-    @GetMapping("/")
+    @GetMapping("")
     public ResponseEntity<?> get(@RequestParam int companyId) {
         try {
             return ResponseEntity.ok(companyService.getCompanyById(companyId));

@@ -1,7 +1,7 @@
 spring:
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
-    url: jdbc:mariadb://101.79.9.79/gonggansongil
+    url: jdbc:mariadb://localhost:3306/gonggansongil?useUnicode=true&characterEncoding=utf8mb4&connectionCollation=utf8mb4_unicode_ci
     username: root
     password: rlatpdud13795@
   jpa:

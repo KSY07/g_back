@@ -9,6 +9,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Entity
 @Table(name="reviews")
 @NoArgsConstructor
@@ -36,4 +38,6 @@ public class Reviews {
 
     private double rating;
 
+    @ElementCollection
+    private List<String> imgUrlList;
 }

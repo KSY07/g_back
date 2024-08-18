@@ -30,6 +30,7 @@ public class CompanyDTO {
     @Builder
     @Getter
     public static class CompanyInfo {
+        private long id;
         private String companyName;
         private String companyThumbnail;
         private String companyID;

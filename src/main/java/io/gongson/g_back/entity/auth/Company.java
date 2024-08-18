@@ -48,6 +48,7 @@ public class Company {
         }
 
         return CompanyDTO.CompanyInfo.builder()
+                .id(c.getId())
                 .companyName(c.getCompanyName())
                 .companyThumbnail(base64String)
                 .companyID(c.getCompanyId())
