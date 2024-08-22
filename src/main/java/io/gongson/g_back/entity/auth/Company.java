@@ -30,6 +30,8 @@ public class Company {
     private String registrationImgDir;
     private String idCardImgDir;
     private String licenseImgDir;
+    @Column(columnDefinition = "MEDIUMTEXT")
+    private String companyDescription;
     private LocalDateTime requestTime;
     private @Setter String profileImgDir;
     private double rating;

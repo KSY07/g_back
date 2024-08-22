@@ -12,6 +12,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Base64;
+import java.util.List;
 
 public class CompanyDTO {
 
@@ -36,5 +37,20 @@ public class CompanyDTO {
         private String companyID;
         private Double rating;
         private boolean isPremium;
+    }
+
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Builder
+    @Getter
+    public static class InfoPage {
+        private long id;
+        private String companyName;
+        private String companyThumbnail;
+        private String companyID;
+        private Double rating;
+        private boolean isPremium;
+        private List<ReviewDTO.Info> reviewList;
+        private List<ConstructionExampleDTO.Info> constructionExampleList;
     }
 }

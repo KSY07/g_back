@@ -1,7 +1,12 @@
 package io.gongson.g_back.controller;
 
+import io.gongson.g_back.dto.CompanyDTO;
+import io.gongson.g_back.dto.ConstructionExampleDTO;
 import io.gongson.g_back.dto.InteriorTipDTO;
+import io.gongson.g_back.dto.ReviewDTO;
 import io.gongson.g_back.service.BoardService;
+import io.gongson.g_back.service.CompanyService;
+import io.gongson.g_back.service.ConstructionExampleService;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,17 +21,20 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Base64;
+import java.util.List;
 
 @RestController
 @RequestMapping("/board")
 @RequiredArgsConstructor
 public class BoardController {
 
+    private final ConstructionExampleService constructionExampleService;
     @Value("${app.file.saveDir}")
     private String rootDir;
 
     private final ResourceLoader resourceLoader;
     private final BoardService boardService;
+    private final CompanyService companyService;
 
     @PostMapping("/image/upload")
     public ResponseEntity<?> uploadImage(
@@ -84,6 +92,65 @@ public class BoardController {
             return ResponseEntity.ok(boardService.getInteriorTip(id));
         } catch (Exception e) {
             e.printStackTrace();
+            return ResponseEntity.status(HttpServletResponse.SC_INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @PostMapping("/reviews")
+    public ResponseEntity<?> createReview(@RequestPart("dto")ReviewDTO.Create dto, @RequestPart("images") List<MultipartFile> images)
+    {
+        try {
+            boardService.createReview(dto, images);
+            return ResponseEntity.status(HttpServletResponse.SC_CREATED).build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpServletResponse.SC_INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @GetMapping("/reviews")
+    public ResponseEntity<?> getReviews(@RequestParam long companyPk) {
+        try {
+            return ResponseEntity.ok(boardService.getReviews(companyPk));
+        } catch(Exception e) {
+            return ResponseEntity.status(HttpServletResponse.SC_INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @PostMapping("/constructionExample")
+    public ResponseEntity<?> createConstructionExample(@RequestPart("dto")ConstructionExampleDTO.Create dto, @RequestPart("images") List<MultipartFile> images) {
+        try {
+            boardService.createConstructionExample(dto, images);
+            return ResponseEntity.status(HttpServletResponse.SC_CREATED).build();
+        } catch(Exception e) {
+            return ResponseEntity.status(HttpServletResponse.SC_INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @GetMapping("/constructionExample")
+    public ResponseEntity<?> getConstructionExample(@RequestParam long companyPk) {
+        try {
+            return ResponseEntity.ok(boardService.getConstructionExamples(companyPk));
+        } catch(Exception e) {
+            return ResponseEntity.status(HttpServletResponse.SC_INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @GetMapping("/companyInfo")
+    public ResponseEntity<?> getCompanyPageInfos(@RequestParam int companyPk) {
+        try {
+            CompanyDTO.CompanyInfo cInfo = companyService.getCompanyById(companyPk);
+            CompanyDTO.InfoPage infos = CompanyDTO.InfoPage.builder()
+                    .companyID(cInfo.getCompanyID())
+                    .companyName(cInfo.getCompanyName())
+                    .companyThumbnail(cInfo.getCompanyThumbnail())
+                    .isPremium(cInfo.isPremium())
+                    .rating(cInfo.getRating())
+                    .constructionExampleList(boardService.getConstructionExamples(companyPk))
+                    .reviewList(boardService.getReviews(companyPk))
+                    .build();
+            return ResponseEntity.ok(infos);
+        } catch(Exception e) {
             return ResponseEntity.status(HttpServletResponse.SC_INTERNAL_SERVER_ERROR).build();
         }
     }

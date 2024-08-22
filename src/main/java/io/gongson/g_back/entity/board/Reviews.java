@@ -9,6 +9,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -40,4 +41,6 @@ public class Reviews {
 
     @ElementCollection
     private List<String> imgUrlList;
+
+    private LocalDateTime createdDate;
 }

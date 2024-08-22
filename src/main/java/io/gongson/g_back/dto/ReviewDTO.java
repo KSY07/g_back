@@ -4,29 +4,35 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
-public class ConstructionExampleDTO {
+public class ReviewDTO {
 
-    @Getter
     @NoArgsConstructor
     @AllArgsConstructor
+    @Getter
     public static class Create {
         private String title;
         private String contents;
-        private long companyPk;
+        private double rating;
+        private String userId;
+        private String companyPk;
     }
 
-    @Builder
-    @Getter
     @NoArgsConstructor
     @AllArgsConstructor
+    @Getter
+    @Builder
     public static class Info {
         private String title;
         private String contents;
-        private List<String> imgUrlList;
+        private double rating;
+        private String userName;
+        private long companyPk;
+        private List<String> imageUrlList;
         private LocalDateTime createdDate;
     }
 }
